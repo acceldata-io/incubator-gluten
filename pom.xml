@@ -70,7 +70,7 @@
     <scala.version>2.12.15</scala.version>
     <spark.major.version>3</spark.major.version>
     <sparkbundle.version>3.4</sparkbundle.version>
-    <spark.version>3.4.4</spark.version>
+    <spark.version>3.5.5.3.3.6.2-1</spark.version>
     <sparkshim.artifactId>spark-sql-columnar-shims-spark34</sparkshim.artifactId>
     <iceberg.version>1.5.0</iceberg.version>
     <delta.package.name>delta-core</delta.package.name>
@@ -81,7 +81,7 @@
     <arrow.version>15.0.0</arrow.version>
     <arrow-gluten.version>15.0.0-gluten</arrow-gluten.version>
     <arrow-memory.artifact>arrow-memory-unsafe</arrow-memory.artifact>
-    <hadoop.version>2.7.4</hadoop.version>
+    <hadoop.version>3.3.6.3.3.6.2-1</hadoop.version>
     <slf4j.version>2.0.7</slf4j.version>
     <log4j.version>2.20.0</log4j.version>
     <antlr4.version>4.9.3</antlr4.version>
