@@ -113,6 +113,11 @@ case "$1" in
     cd ${INSTALL_DIR} && \
     install_spark "3.5.5" "3" "2.13"
     ;;
+4.0)
+    # Spark-4.0
+    cd ${INSTALL_DIR} && \
+    install_spark "4.0.0" "4" "2.12"
+    ;;
 *)
     echo "Spark version is expected to be specified."
     exit 1
