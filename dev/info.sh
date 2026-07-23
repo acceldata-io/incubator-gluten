@@ -14,7 +14,7 @@
 # limitations under the License.
 set -e
 
-version='1.7.0-SNAPSHOT'
+version='1.7.0.3.3.6.5'
 cb='```'
 
 if [ ! -x "$(command -v cmake)" ]; then
