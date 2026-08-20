@@ -285,6 +285,8 @@ function setup_linux {
     case "${LINUX_VERSION_ID%%.*}" in
     9)
       $GLUTEN_VELOX_SCRIPT_HOME/setup-rhel.sh ;;
+    8)
+      $GLUTEN_VELOX_SCRIPT_HOME/setup-centos8.sh ;;
     *)
       echo "Unsupported ${LINUX_DISTRIBUTION} version: $LINUX_VERSION_ID"
       exit 1

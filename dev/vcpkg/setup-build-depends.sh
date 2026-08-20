@@ -141,13 +141,8 @@ install_centos_7() {
     install_maven_from_source
 }
 
-install_centos_8() {
-    sed -i \
-        -e 's/^mirrorlist/#mirrorlist/' \
-        -e 's/^# *baseurl *=/baseurl=/' \
-        -e 's/mirror\.centos\.org/vault.centos.org/' \
-        /etc/yum.repos.d/*.repo
-
+# Shared EL8 deps for CentOS/Rocky/Alma/RHEL 8 (includes patch for Arrow build).
+install_el8_build_depends() {
     yum -y install \
         wget curl tar zip unzip git which sudo patch \
         cmake perl-IPC-Cmd autoconf automake libtool \
@@ -165,7 +160,8 @@ install_centos_8() {
     install_maven_from_source
 }
 
-install_centos_9() {
+# Shared EL9 deps for CentOS/Rocky/Alma/RHEL 9.
+install_el9_build_depends() {
     yum -y install \
         wget tar zip unzip git which sudo patch \
         cmake perl-IPC-Cmd autoconf automake libtool \
@@ -182,6 +178,30 @@ install_centos_9() {
 
     install_maven_from_source
 }
+
+install_centos_8() {
+    # CentOS 8 is EOL; remap repos to the vault.
+    sed -i \
+        -e 's/^mirrorlist/#mirrorlist/' \
+        -e 's/^# *baseurl *=/baseurl=/' \
+        -e 's/mirror\.centos\.org/vault.centos.org/' \
+        /etc/yum.repos.d/*.repo
+
+    install_el8_build_depends
+}
+
+install_centos_9() {
+    install_el9_build_depends
+}
+
+# Rocky/Alma/RHEL share CentOS package sets but keep their own repos (no vault remap).
+install_rocky_8() { install_el8_build_depends; }
+install_almalinux_8() { install_el8_build_depends; }
+install_rhel_8() { install_el8_build_depends; }
+
+install_rocky_9() { install_el9_build_depends; }
+install_almalinux_9() { install_el9_build_depends; }
+install_rhel_9() { install_el9_build_depends; }
 
 install_ubuntu_20.04() {
     apt-get update && apt-get -y install \
@@ -292,7 +312,19 @@ eval "$(sed -En "/^(VERSION_|)ID=/s/^/OS_/p" /etc/os-release)"
 
 [ -n "$OS_ID" -a -n "$OS_VERSION_ID" ] || log_fatal "Failed to detect os: ID or VERSION_ID is empty"
 
-INSTALL_FUNC="install_$(echo "$OS_ID" | tr 'A-Z' 'a-z')_${OS_VERSION_ID}"
+OS_ID_LOWER="$(echo "$OS_ID" | tr 'A-Z' 'a-z')"
+OS_VERSION_MAJOR="${OS_VERSION_ID%%.*}"
+
+# EL-family IDs use major version only (e.g. rocky 8.10 -> install_rocky_8).
+case "$OS_ID_LOWER" in
+centos|rocky|almalinux|rhel)
+    INSTALL_FUNC="install_${OS_ID_LOWER}_${OS_VERSION_MAJOR}"
+    ;;
+*)
+    INSTALL_FUNC="install_${OS_ID_LOWER}_${OS_VERSION_ID}"
+    ;;
+esac
+
 [ "$(type -t "$INSTALL_FUNC")" == function ] || log_fatal "Unsupport OS: ${OS_ID} ${OS_VERSION_ID}"
 
 set -x
