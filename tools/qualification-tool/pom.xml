@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.gluten</groupId>
   <artifactId>qualification-tool</artifactId>
-  <version>1.7.0.3.3.6.5</version>
+  <version>1.7.0.3.4.3.0</version>
   <name>Qualification Tool</name>
 
   <properties>
