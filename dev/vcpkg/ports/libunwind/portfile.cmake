@@ -1,11 +1,12 @@
-# ODP: overlay of upstream vcpkg port; SHA512 updated because the GitHub archive
-# for libunwind v1.8.3 no longer matches the hash pinned in the vcpkg baseline.
-vcpkg_from_github(
+# ODP: overlay of the upstream vcpkg port. GitHub auto-generated archives are not
+# bit-stable, so the SHA512 pinned in the vcpkg baseline for the v1.8.3 tarball can
+# drift even though the tag is unchanged. Fetch the exact commit with git instead
+# (a commit SHA is content-addressed, so there is no archive checksum to drift).
+# 7bda80a564cddc5b215a84509026030cf16dfd94 is the commit behind tag v1.8.3.
+vcpkg_from_git(
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO "libunwind/libunwind"
-    REF "v${VERSION}"
-    HEAD_REF master
-    SHA512 f761d5af15e8ab0f9616c57c67f81e84ec2132ff53df8bfe9f1fb72fe838bc05bd02107f4a7b530910d34bef45c28fbc855b91a0c2d04017c94e3a5e181b3119
+    URL https://github.com/libunwind/libunwind
+    REF 7bda80a564cddc5b215a84509026030cf16dfd94
     PATCHES
         liblzma.diff
 )
